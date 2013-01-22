@@ -1,6 +1,6 @@
 # == Class: atrpms
 #
-# Full description of class atrpms here.
+# Installs and enables ATrpms repository
 #
 # === Parameters
 #
@@ -10,32 +10,39 @@
 #   Explanation of what this parameter affects and what it defaults to.
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
-#
 # === Examples
 #
-#  class { atrpms:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
-#  }
+# Sample Usage:
+#   include epel
 #
 # === Authors
 #
-# Author Name <author@domain.com>
-#
-# === Copyright
-#
-# Copyright 2013 Your name here, unless otherwise noted.
+# Eric Shamow <eric@puppetlabs.com>
 #
 class atrpms {
+  if $::osfamily == 'RedHat' and $::operatingsystem != 'Fedora' {
+    yumrepo { 'atrpms':
+      baseurl  => "http://dl.atrpms.net/el${::os_maj_version}-${::architecture}/atrpms/stable",
+      proxy    => $atrpms::params::proxy,
+      enabled  => '1',
+      gpgcheck => '1',
+      gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY.atrpms',
+      descr    => "ATrpms packages for Enterprise Linux ${::os_maj_version} - ${::architecture}",
+    }
 
+    file { '/etc/pki/rpm-gpg/RPM-GPG-KEY.atrpms':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => 'puppet:///modules/atrpms/RPM-GPG-KEY.atrpms',
+    }
+
+    epel::rpm_gpg_key{ 'atrpms':
+      path => '/etc/pki/rpm-gpg/RPM-GPG-KEY.atrpms',
+    }
+  } else {
+      notice ("Your operating system ${::operatingsystem} will not have the EPEL repository applied")
+  }
 
 }
