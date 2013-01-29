@@ -1,6 +1,6 @@
 project_page 'http://github.com/stahnma/puppet-module-epel'
 name    'eshamow-atrpms'
-version '0.0.1'
+version '0.0.2'
 source 'http://github.com/eshamow/eshamow-atrpms'
 author 'eshamow'
 license 'Apache License, Version 2.0'
