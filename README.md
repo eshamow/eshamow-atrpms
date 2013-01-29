@@ -9,6 +9,10 @@ The following repo will be setup and enabled by default:
 
   * atrpms
 
+NOTE: This module requires stahnma/epel but does not enable the EPEL module
+by default.  It does however use epel::gpg_rpm_key to avoid redefining the
+same functionality.
+
 # Proxy
 If you have an http proxy required to access the internet, you can use the
 $proxy variable in the params.pp file. If it is set to a value other than

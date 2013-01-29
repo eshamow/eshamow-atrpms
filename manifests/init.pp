@@ -22,6 +22,24 @@ class atrpms {
       descr    => "ATrpms packages for Enterprise Linux ${::os_maj_version} - ${::architecture}",
     }
 
+    yumrepo { 'atrpms-testing':
+      baseurl  => "http://dl.atrpms.net/el${::os_maj_version}-${::architecture}/atrpms/testing",
+      proxy    => $atrpms::params::proxy,
+      enabled  => '0',
+      gpgcheck => '1',
+      gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY.atrpms',
+      descr    => "ATrpms testing packages for Enterprise Linux ${::os_maj_version} - ${::architecture}",
+    }
+
+    yumrepo { 'atrpms-bleeding':
+      baseurl  => "http://dl.atrpms.net/el${::os_maj_version}-${::architecture}/atrpms/bleeding",
+      proxy    => $atrpms::params::proxy,
+      enabled  => '0',
+      gpgcheck => '1',
+      gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY.atrpms',
+      descr    => "ATrpms bleeding edge packages for Enterprise Linux ${::os_maj_version} - ${::architecture}",
+    }
+
     file { '/etc/pki/rpm-gpg/RPM-GPG-KEY.atrpms':
       ensure => present,
       owner  => 'root',
